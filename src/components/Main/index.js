@@ -1,18 +1,24 @@
-import React, { Component } from "react";
-import Search from "./Search";
-import Card from "./Card";
-import styles from "./styles";
+import React, { Component } from 'react'
+import Search from './Search'
+import Card from './Card'
+import styles from './styles'
 
-class Main extends Component {
-    render() {
-        return (
-            <div style={{ ...styles.container, ...this.props.style }}>
-                <div style={styles.title}>NBA Interview</div>
-                <Search style={styles.search} />
-                <Card />
-            </div>
-        );
-    }
+const getPlayers = () => {
+  return fetch('http://localhost:3008/players').then(response =>
+    response.json()
+  )
 }
 
-export default Main;
+class Main extends Component {
+  render () {
+    return (
+      <div style={{ ...styles.container, ...this.props.style }}>
+        <div style={styles.title}>NBA Interview</div>
+        <Search style={styles.search} />
+        <Card />
+      </div>
+    )
+  }
+}
+
+export default Main
