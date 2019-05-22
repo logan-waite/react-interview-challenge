@@ -1,26 +1,17 @@
 import React, { Component } from 'react'
 import * as R from 'ramda'
+import { getPlayers, getTeams } from '../../api'
 import Search from './Search'
 import Card from './Card'
 import styles from './styles'
-
-const getPlayers = () => {
-  return fetch('http://localhost:3008/players').then(response =>
-    response.json()
-  )
-}
-
-const getTeams = () => {
-  return fetch('http://localhost:3008/teams').then(response => response.json())
-}
 
 const getByValue = R.curry((value, prop, list) =>
   R.find(item => R.equals(R.prop(prop, item), value), list)
 )
 
 const getPlayerInfo = async () => {
-  const players = await getPlayers()
-  const teams = await getTeams()
+  const players = await getPlayers({ page: 1 })
+  const teams = await getTeams({})
   return R.map(
     player =>
       R.assoc('team', getByValue(player.team, 'id', teams).name, player),
@@ -38,7 +29,9 @@ class Main extends Component {
   }
 
   componentDidMount () {
-    getPlayerInfo().then(result => this.setState({ players: result }))
+    getPlayerInfo().then(result => {
+      this.setState({ players: result })
+    })
   }
 
   render () {
