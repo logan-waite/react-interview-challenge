@@ -9,8 +9,8 @@ const getByValue = R.curry((value, prop, list) =>
   R.find(item => R.equals(R.prop(prop, item), value), list)
 )
 
-const getPlayerInfo = async () => {
-  const players = await getPlayers({ page: 1 })
+const getPlayerInfo = async search => {
+  const players = await getPlayers({ page: 1, search })
   const teams = await getTeams({})
   return R.map(
     player =>
@@ -24,7 +24,8 @@ class Main extends Component {
     super(props)
 
     this.state = {
-      players: []
+      players: [],
+      searchTerm: ''
     }
   }
 
@@ -34,11 +35,21 @@ class Main extends Component {
     })
   }
 
+  handleChange = event => {
+    const searchTerm = event.target.value
+    this.setState({ searchTerm })
+    getPlayerInfo(searchTerm).then(result => this.setState({ players: result }))
+  }
+
   render () {
     return (
       <div style={{ ...styles.container, ...this.props.style }}>
         <div style={styles.title}>NBA Interview</div>
-        <Search style={styles.search} />
+        <Search
+          style={styles.search}
+          value={this.state.searchTerm}
+          onChange={this.handleChange}
+        />
         {R.map(
           player => (
             <Card
