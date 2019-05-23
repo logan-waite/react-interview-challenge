@@ -48,6 +48,12 @@ class Main extends Component {
     this.setState({ editPlayer: playerId })
   }
 
+  refreshAfterSave = () => {
+    getPlayerInfo(this.state.searchTerm).then(result =>
+      this.setState({ players: result, editPlayer: null })
+    )
+  }
+
   render () {
     return (
       <div style={{ ...styles.container, ...this.props.style }}>
@@ -77,6 +83,7 @@ class Main extends Component {
                 'id',
                 this.state.players
               )}
+              onSave={this.refreshAfterSave}
             />
           </Modal>
         ) : null}

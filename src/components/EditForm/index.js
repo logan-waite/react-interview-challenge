@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { updatePlayer } from 'src/api'
+import { tsPropertySignature } from '@babel/types'
 
 const SaveButton = ({ onClick }) => <button onClick={onClick}>Save</button>
 
-const EditForm = ({ player }) => {
+const EditForm = ({ player, onSave }) => {
   const [name, setName] = useState(player.name)
   const [college, setCollege] = useState(player.college)
   const [position, setPosition] = useState(player.position)
@@ -40,7 +41,16 @@ const EditForm = ({ player }) => {
           onChange={event => setPosition(event.target.value)}
         />
       </div>
-      <SaveButton />
+      <SaveButton
+        onClick={event => {
+          updatePlayer({
+            id: player.id,
+            body: { college, name, position }
+          }).then(result => {
+            onSave()
+          })
+        }}
+      />
     </div>
   )
 }
