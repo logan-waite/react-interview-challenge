@@ -20,6 +20,25 @@ const apiPatch = curry((endpoint, { id, body }) => {
   }).then(response => response.json())
 })
 
+const apiPost = curry((endpoint, body) => {
+  return fetch(`${baseUrl + endpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+})
+
+const apiDelete = curry((endpoint, id) => {
+  return fetch(`${baseUrl + endpoint}/${id}`, {
+    method: 'DELETE'
+  })
+})
+
 export const getPlayers = apiGet('/players')
 export const getTeams = apiGet('/teams')
+export const getFavorites = apiGet('/favorites')
 export const updatePlayer = apiPatch('/players')
+export const addFavorite = apiPost('/favorites')
+export const deleteFavorite = apiDelete('/favorites')

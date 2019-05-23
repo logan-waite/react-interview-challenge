@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as R from 'ramda'
-import { getPlayers, getTeams } from 'src/api'
+import { getPlayers, getTeams, getFavorites } from 'src/api'
 import { getByValue } from 'src/utils'
 import Search from 'src/components/Search'
 import Card from 'src/components/Card'
@@ -28,6 +28,7 @@ class Main extends Component {
     this.state = {
       players: [],
       teams: [],
+      favorites: [],
       searchTerm: '',
       editPlayer: null
     }
@@ -36,6 +37,9 @@ class Main extends Component {
   componentDidMount () {
     getPlayerInfo().then(result => {
       this.setState({ players: result.players, teams: result.teams })
+    })
+    getFavorites({}).then(favorites => {
+      this.setState({ favorites })
     })
   }
 
@@ -55,6 +59,11 @@ class Main extends Component {
     getPlayerInfo(this.state.searchTerm).then(result =>
       this.setState({ players: result.players, editPlayer: null })
     )
+
+    getFavorites({}).then(favorites => {
+      console.log(favorites)
+      this.setState({ favorites })
+    })
   }
 
   render () {
@@ -66,13 +75,14 @@ class Main extends Component {
           value={this.state.searchTerm}
           onChange={this.handleChange}
         />
+        <h2>Favorites: {this.state.favorites.length}</h2>
         {R.map(
           player => (
             <Card
               key={player.id}
-              name={player.name}
-              image={player.image}
-              team={player.team}
+              player={player}
+              isFavorite={R.contains(player, this.state.favorites)}
+              onFavorited={this.refreshAfterSave}
               onEdit={this.openModal(player.id)}
             />
           ),
