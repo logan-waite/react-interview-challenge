@@ -1,6 +1,6 @@
 import { curry } from 'ramda'
 
-const callApi = curry((endpoint, { page, search }) => {
+const callApiGet = curry((endpoint, { page, search }) => {
   const baseUrl = 'http://localhost:3008'
   let queryString = `?_page=${page || ''}&q=${search || ''}`
 
@@ -9,5 +9,5 @@ const callApi = curry((endpoint, { page, search }) => {
   )
 })
 
-export const getPlayers = callApi('/players')
-export const getTeams = callApi('/teams')
+export const getPlayers = callApiGet('/players')
+export const getTeams = callApiGet('/teams')

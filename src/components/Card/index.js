@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './styles'
 
+const EditButton = ({ onClick }) => <button onClick={onClick}>Edit</button>
+
 const Card = props => {
   return (
     <div style={{ ...styles.container, ...props.style }}>
@@ -12,6 +14,9 @@ const Card = props => {
       />
 
       <div>{props.team}</div>
+      <div className='buttons' style={styles.buttons}>
+        <EditButton onClick={props.onEdit} />
+      </div>
     </div>
   )
 }

@@ -3,6 +3,8 @@ import * as R from 'ramda'
 import { getPlayers, getTeams } from 'src/api'
 import Search from 'src/components/Search'
 import Card from 'src/components/Card'
+import Modal from 'src/components/Modal'
+import EditForm from 'src/components/EditForm'
 import styles from './styles'
 
 const getByValue = R.curry((value, prop, list) =>
@@ -25,7 +27,8 @@ class Main extends Component {
 
     this.state = {
       players: [],
-      searchTerm: ''
+      searchTerm: '',
+      editPlayer: null
     }
   }
 
@@ -39,6 +42,10 @@ class Main extends Component {
     const searchTerm = event.target.value
     this.setState({ searchTerm })
     getPlayerInfo(searchTerm).then(result => this.setState({ players: result }))
+  }
+
+  openModal = playerId => event => {
+    this.setState({ editPlayer: playerId })
   }
 
   render () {
@@ -57,10 +64,22 @@ class Main extends Component {
               name={player.name}
               image={player.image}
               team={player.team}
+              onEdit={this.openModal(player.id)}
             />
           ),
           this.state.players
         )}
+        {this.state.editPlayer !== null ? (
+          <Modal onClose={() => this.setState({ editPlayer: null })}>
+            <EditForm
+              player={getByValue(
+                this.state.editPlayer,
+                'id',
+                this.state.players
+              )}
+            />
+          </Modal>
+        ) : null}
       </div>
     )
   }
