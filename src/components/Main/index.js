@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import * as R from 'ramda'
-import { getPlayers, getTeams } from '../../api'
-import Search from './Search'
-import Card from './Card'
+import { getPlayers, getTeams } from 'src/api'
+import Search from 'src/components/Search'
+import Card from 'src/components/Card'
 import styles from './styles'
 
 const getByValue = R.curry((value, prop, list) =>
