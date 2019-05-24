@@ -18,8 +18,10 @@ const handleFavoriteClick = (isFavorite, player, onFavorited) => () => {
 
 class Card extends Component {
   render () {
+    let style = { ...styles.container, ...this.props.style }
+    if (this.props.small) style = { ...style, ...styles.smallContainer }
     return (
-      <div style={{ ...styles.container, ...this.props.style }}>
+      <div style={style}>
         <div style={this.props.small ? { display: 'none' } : styles.buttons}>
           <EditButton onClick={this.props.onEdit} />
           <FontAwesomeIcon
@@ -32,7 +34,9 @@ class Card extends Component {
           />
         </div>
         <h3 style={styles.name}>{this.props.player.name}</h3>
-        <span>{this.props.player.position}</span>
+        <span style={{ flex: 1, textAlign: 'center' }}>
+          {this.props.player.position}
+        </span>
         <img
           onError={e => {
             e.target.onerror = null
@@ -45,7 +49,7 @@ class Card extends Component {
           }
           alt='player_image'
         />
-        <div>{this.props.player.team}</div>
+        {this.props.small ? null : <div>{this.props.player.team}</div>}
       </div>
     )
   }

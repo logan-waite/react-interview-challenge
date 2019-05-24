@@ -10,16 +10,21 @@ export default {
     width: '280px',
     margin: '10px'
   },
+  smallContainer: {
+    flexDirection: 'row',
+    width: '300px'
+  },
   name: {
     // paddingBottom: '16px'
-    margin: '0px'
+    margin: '0px',
+    padding: '5px'
   },
   playerImage: {
     paddingBottom: '16px',
     height: '204px'
   },
   smallPlayerImage: {
-    height: '100px'
+    width: '100px'
   },
   buttons: {
     display: 'flex',
