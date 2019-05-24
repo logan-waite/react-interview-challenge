@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as R from 'ramda'
+import { Link } from 'react-router-dom'
 import { getPlayers, getTeams, getFavorites } from 'src/api'
 import { getByValue } from 'src/utils'
 import Search from 'src/components/Search'
@@ -22,7 +23,7 @@ const getPlayerInfo = async (page, search) => {
   }
 }
 
-class Main extends Component {
+class Home extends Component {
   constructor (props) {
     super(props)
 
@@ -95,9 +96,11 @@ class Main extends Component {
             value={this.state.searchTerm}
             onChange={this.handleChange}
           />
-          <h2 style={styles.favoriteCounter}>
-            Favorites: {this.state.favorites.length}
-          </h2>
+          <Link to='/favorites'>
+            <h2 style={styles.favoriteCounter}>
+              Favorites: {this.state.favorites.length}
+            </h2>
+          </Link>
         </header>
         <div style={styles.cardWrapper}>
           {R.map(
@@ -134,4 +137,4 @@ class Main extends Component {
   }
 }
 
-export default Main
+export default Home
