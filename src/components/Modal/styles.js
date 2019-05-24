@@ -13,6 +13,6 @@ export default {
   content: {
     backgroundColor: 'white',
     borderRadius: '10px',
-    padding: '15px'
+    padding: '25px'
   }
 }

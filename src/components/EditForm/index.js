@@ -56,7 +56,13 @@ const EditForm = ({ player, onSave, teams }) => {
         onClick={event => {
           updatePlayer({
             id: player.id,
-            body: { college, name, position, team }
+            body: {
+              college,
+              name,
+              position,
+              team,
+              editedAt: new Date().toISOString()
+            }
           }).then(result => {
             onSave()
           })
