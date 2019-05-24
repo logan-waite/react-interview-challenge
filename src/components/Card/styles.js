@@ -18,6 +18,9 @@ export default {
     paddingBottom: '16px',
     height: '204px'
   },
+  smallPlayerImage: {
+    height: '100px'
+  },
   buttons: {
     display: 'flex',
     width: '100%',

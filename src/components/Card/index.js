@@ -19,7 +19,7 @@ const handleFavoriteClick = (isFavorite, player, onFavorited) => () => {
 const Card = props => {
   return (
     <div style={{ ...styles.container, ...props.style }}>
-      <div style={styles.buttons}>
+      <div style={props.small ? { display: 'none' } : styles.buttons}>
         <EditButton onClick={props.onEdit} />
         <FontAwesomeIcon
           icon={props.isFavorite ? solidHeart : hollowHeart}
@@ -39,7 +39,7 @@ const Card = props => {
             'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
         }}
         src={`http://localhost:3008/${props.player.image}`}
-        style={styles.playerImage}
+        style={props.small ? styles.smallPlayerImage : styles.playerImage}
         alt='player_image'
       />
       <div>{props.player.team}</div>
