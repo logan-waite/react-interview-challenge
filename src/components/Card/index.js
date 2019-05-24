@@ -17,10 +17,6 @@ const handleFavoriteClick = (isFavorite, player, onFavorited) => () => {
 }
 
 class Card extends Component {
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     return (
       <div style={{ ...styles.container, ...this.props.style }}>

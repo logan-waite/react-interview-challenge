@@ -2,17 +2,16 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import * as R from 'ramda'
-import { getFavorites } from 'src/api'
+import { getFavorites, deleteFavorite, addFavorite } from 'src/api'
 import DraggableCard from 'src/components/DraggableCard'
 
 const CardList = ({ players }) =>
-  players.map((player, index) => <DraggableCard small key={player.id} index={index} player={player} /> )
-  // R.map(
-  //   (player, index) => (
-  //     <DraggableCard small key={player.id} index={index} player={player} />
-  //   ),
-  //   players
-  // )
+  R.addIndex(R.map)(
+    (player, index) => (
+      <DraggableCard small key={player.id} index={index} player={player} />
+    ),
+    players
+  )
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -46,7 +45,17 @@ class Favorites extends Component {
       result.destination.index
     )
 
-    this.setState({ favorites })
+    R.pipe(
+      R.map(favorite => {
+        deleteFavorite(favorite.id)
+        return favorite
+      }),
+      R.map(favorite => {
+        addFavorite(favorite)
+        return favorite
+      }),
+      favorites => this.setState({ favorites })
+    )(favorites)
   }
 
   componentDidMount () {
