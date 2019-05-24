@@ -6,11 +6,13 @@ import Search from 'src/components/Search'
 import Card from 'src/components/Card'
 import Modal from 'src/components/Modal'
 import EditForm from 'src/components/EditForm'
+import Pagination from 'src/components/Pagination'
 import styles from './styles'
 
-const getPlayerInfo = async search => {
-  const players = await getPlayers({ page: 1, search })
+const getPlayerInfo = async (page, search) => {
+  const players = await getPlayers({ page, search })
   const teams = await getTeams({})
+  console.log({ players })
   return {
     players: R.map(
       player =>
@@ -30,24 +32,38 @@ class Main extends Component {
       teams: [],
       favorites: [],
       searchTerm: '',
+      page: 1,
       editPlayer: null
     }
   }
 
-  componentDidMount () {
-    getPlayerInfo().then(result => {
-      this.setState({ players: result.players, teams: result.teams })
+  updateAllInfo = (
+    page = this.state.page,
+    searchTerm = this.state.searchTerm
+  ) => {
+    console.log(searchTerm)
+    getPlayerInfo(page, searchTerm).then(result => {
+      this.setState({
+        players: result.players,
+        teams: result.teams,
+        editPlayer: null,
+        page
+      })
     })
     getFavorites({}).then(favorites => {
       this.setState({ favorites })
     })
   }
 
+  componentDidMount () {
+    this.updateAllInfo()
+  }
+
   handleChange = event => {
     const searchTerm = event.target.value
     this.setState({ searchTerm })
-    getPlayerInfo(searchTerm).then(result =>
-      this.setState({ players: result.players })
+    getPlayerInfo(1, searchTerm).then(result =>
+      this.setState({ players: result.players, page: 1 })
     )
   }
 
@@ -55,39 +71,50 @@ class Main extends Component {
     this.setState({ editPlayer: playerId })
   }
 
-  refreshAfterSave = () => {
-    getPlayerInfo(this.state.searchTerm).then(result =>
-      this.setState({ players: result.players, editPlayer: null })
-    )
-
-    getFavorites({}).then(favorites => {
-      console.log(favorites)
-      this.setState({ favorites })
-    })
+  updatePage = page => () => {
+    if (page < 1) page = 1
+    else if (page > 10) page = 10
+    this.updateAllInfo(page)
   }
 
   render () {
     return (
       <div style={{ ...styles.container, ...this.props.style }}>
         <div style={styles.title}>NBA Interview</div>
-        <Search
-          style={styles.search}
-          value={this.state.searchTerm}
-          onChange={this.handleChange}
-        />
-        <h2>Favorites: {this.state.favorites.length}</h2>
-        {R.map(
-          player => (
-            <Card
-              key={player.id}
-              player={player}
-              isFavorite={R.contains(player, this.state.favorites)}
-              onFavorited={this.refreshAfterSave}
-              onEdit={this.openModal(player.id)}
-            />
-          ),
-          this.state.players
-        )}
+        <header
+          style={{
+            width: '75%',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Pagination
+            pageCallback={this.updatePage}
+            currentPage={this.state.page}
+          />
+          <Search
+            style={styles.search}
+            value={this.state.searchTerm}
+            onChange={this.handleChange}
+          />
+          <h2 style={styles.favoriteCounter}>
+            Favorites: {this.state.favorites.length}
+          </h2>
+        </header>
+        <div style={styles.cardWrapper}>
+          {R.map(
+            player => (
+              <Card
+                key={player.id}
+                player={player}
+                isFavorite={R.contains(player, this.state.favorites)}
+                onFavorited={this.updateAllInfo}
+                onEdit={this.openModal(player.id)}
+              />
+            ),
+            this.state.players
+          )}
+        </div>
         {this.state.editPlayer !== null ? (
           <Modal onClose={() => this.setState({ editPlayer: null })}>
             <EditForm

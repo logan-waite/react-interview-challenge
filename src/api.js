@@ -3,6 +3,7 @@ import { curry } from 'ramda'
 const baseUrl = 'http://localhost:3008'
 
 const apiGet = curry((endpoint, { page, search }) => {
+  console.log({ search })
   let queryString = `?_page=${page || ''}&q=${search || ''}`
 
   return fetch(baseUrl + endpoint + queryString).then(response =>

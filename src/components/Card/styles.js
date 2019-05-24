@@ -7,10 +7,12 @@ export default {
     border: '1px solid #eee',
     borderRadius: '4px',
     padding: '16px',
-    width: '280px'
+    width: '280px',
+    margin: '10px'
   },
   name: {
-    paddingBottom: '16px'
+    // paddingBottom: '16px'
+    marginBottom: '0px'
   },
   playerImage: {
     paddingBottom: '16px'

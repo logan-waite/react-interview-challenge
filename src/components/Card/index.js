@@ -27,7 +27,8 @@ const Card = props => {
           props.onFavorited
         )}
       />
-      <div style={styles.name}>{props.player.name}</div>
+      <h3 style={styles.name}>{props.player.name}</h3>
+      <span>{props.player.position}</span>
       <img
         src={`http://localhost:3008/${props.player.image}`}
         style={styles.playerImage}
