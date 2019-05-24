@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import * as R from 'ramda'
 import { getFavorites } from 'src/api'
-import Card from 'src/components/Card'
+import DraggableCard from 'src/components/DraggableCard'
 
 const CardList = ({ players }) =>
-  R.map(player => <Card small key={player.id} player={player} />, players)
+  players.map((player, index) => <DraggableCard small key={player.id} index={index} player={player} /> )
+  // R.map(
+  //   (player, index) => (
+  //     <DraggableCard small key={player.id} index={index} player={player} />
+  //   ),
+  //   players
+  // )
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+
+  return result
+}
 
 class Favorites extends Component {
   constructor (props) {
@@ -14,6 +29,24 @@ class Favorites extends Component {
     this.state = {
       favorites: []
     }
+  }
+
+  onDragEnd = result => {
+    if (!result.destination) {
+      return
+    }
+
+    if (result.destination.index === result.source.index) {
+      return
+    }
+
+    const favorites = reorder(
+      this.state.favorites,
+      result.source.index,
+      result.destination.index
+    )
+
+    this.setState({ favorites })
   }
 
   componentDidMount () {
@@ -25,7 +58,16 @@ class Favorites extends Component {
       <div>
         <Link to='/'>Back</Link>
         <h2>Favorites</h2>
-        <CardList players={this.state.favorites} />
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId='favoritesDroppable'>
+            {provided => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <CardList players={this.state.favorites} />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     )
   }
