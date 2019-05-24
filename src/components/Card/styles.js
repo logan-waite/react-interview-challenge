@@ -15,7 +15,8 @@ export default {
     marginBottom: '0px'
   },
   playerImage: {
-    paddingBottom: '16px'
+    paddingBottom: '16px',
+    height: '204px'
   },
   buttons: {
     alignSelf: 'flex-end'

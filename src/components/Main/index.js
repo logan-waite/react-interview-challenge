@@ -107,7 +107,10 @@ class Main extends Component {
               <Card
                 key={player.id}
                 player={player}
-                isFavorite={R.contains(player, this.state.favorites)}
+                isFavorite={
+                  R.find(R.propEq('id', player.id), this.state.favorites) !==
+                  undefined
+                }
                 onFavorited={this.updateAllInfo}
                 onEdit={this.openModal(player.id)}
               />
@@ -124,7 +127,7 @@ class Main extends Component {
                 'id',
                 this.state.players
               )}
-              onSave={this.refreshAfterSave}
+              onSave={this.updateAllInfo}
             />
           </Modal>
         ) : null}

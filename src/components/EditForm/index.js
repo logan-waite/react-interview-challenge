@@ -2,8 +2,24 @@ import React, { useState } from 'react'
 import { updatePlayer } from 'src/api'
 import { getByValue } from 'src/utils'
 import TeamSelect from 'src/components/TeamSelect'
+import TextInput from 'src/components/TextInput'
 
-const SaveButton = ({ onClick }) => <button onClick={onClick}>Save</button>
+const SaveButton = ({ onClick }) => (
+  <button
+    style={{
+      float: 'right',
+      fontSize: '16px',
+      backgroundColor: 'limegreen',
+      borderRadius: '4px',
+      padding: '.5rem .75rem',
+      color: 'white',
+      border: '1px solid green'
+    }}
+    onClick={onClick}
+  >
+    Save
+  </button>
+)
 
 const EditForm = ({ player, onSave, teams }) => {
   const [name, setName] = useState(player.name)
@@ -13,36 +29,22 @@ const EditForm = ({ player, onSave, teams }) => {
 
   return (
     <div>
-      <div>
-        <label htmlFor='name'>Name</label>
-        <input
-          id='name'
-          type='text'
-          name='name'
-          value={name}
-          onChange={event => setName(event.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor='college'>College</label>
-        <input
-          id='college'
-          type='text'
-          name='college'
-          value={college}
-          onChange={event => setCollege(event.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor='position'>Position</label>
-        <input
-          id='position'
-          type='text'
-          name='position'
-          value={position}
-          onChange={event => setPosition(event.target.value)}
-        />
-      </div>
+      <h2>Edit Player</h2>
+      <TextInput
+        name='name'
+        value={name}
+        onChange={event => setName(event.target.value)}
+      />
+      <TextInput
+        name='college'
+        value={college}
+        onChange={event => setCollege(event.target.value)}
+      />
+      <TextInput
+        name='position'
+        value={position}
+        onChange={event => setPosition(event.target.value)}
+      />
       <TeamSelect
         teams={teams}
         selected={team}

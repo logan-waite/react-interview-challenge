@@ -1,6 +1,6 @@
 export default {
   background: {
-    position: 'absolute',
+    position: 'fixed',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

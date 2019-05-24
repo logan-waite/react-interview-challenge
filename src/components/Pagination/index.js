@@ -13,7 +13,7 @@ const Pagination = props => (
       style={styles.arrows}
       onClick={props.pageCallback(props.currentPage - 1)}
     />
-    <span style={styles.page}>{props.currentPage}</span>
+    <span style={styles.page}>Page {props.currentPage}</span>
     <FontAwesomeIcon
       icon={faChevronRight}
       style={styles.arrows}
