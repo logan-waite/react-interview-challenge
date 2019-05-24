@@ -49,7 +49,6 @@ const EditForm = ({ player, onSave, teams }) => {
         teams={teams}
         selected={team}
         onChange={team => {
-          console.log(team)
           setTeam(team)
         }}
       />

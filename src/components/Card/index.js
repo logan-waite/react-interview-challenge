@@ -16,44 +16,33 @@ const handleFavoriteClick = (isFavorite, player, onFavorited) => () => {
   })
 }
 
-const ImagePlaceholder = props => (
-  <div>
-    <h1>No Picture Available</h1>
-  </div>
-)
-
 const Card = props => {
   return (
     <div style={{ ...styles.container, ...props.style }}>
-      <FontAwesomeIcon
-        icon={props.isFavorite ? solidHeart : hollowHeart}
-        onClick={handleFavoriteClick(
-          props.isFavorite,
-          props.player,
-          props.onFavorited
-        )}
-      />
+      <div style={styles.buttons}>
+        <EditButton onClick={props.onEdit} />
+        <FontAwesomeIcon
+          icon={props.isFavorite ? solidHeart : hollowHeart}
+          onClick={handleFavoriteClick(
+            props.isFavorite,
+            props.player,
+            props.onFavorited
+          )}
+        />
+      </div>
       <h3 style={styles.name}>{props.player.name}</h3>
       <span>{props.player.position}</span>
-      {props.player.image !== undefined ? (
-        <img
-          onError={e => {
-            e.target.onerror = null
-            e.target.src =
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
-          }}
-          src={`http://localhost:3008/${props.player.image}`}
-          style={styles.playerImage}
-          alt='player_image'
-        />
-      ) : (
-        <ImagePlaceholder />
-      )}
-
+      <img
+        onError={e => {
+          e.target.onerror = null
+          e.target.src =
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
+        }}
+        src={`http://localhost:3008/${props.player.image}`}
+        style={styles.playerImage}
+        alt='player_image'
+      />
       <div>{props.player.team}</div>
-      <div className='buttons' style={styles.buttons}>
-        <EditButton onClick={props.onEdit} />
-      </div>
     </div>
   )
 }

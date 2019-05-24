@@ -12,7 +12,6 @@ import styles from './styles'
 const getPlayerInfo = async (page, search) => {
   const players = await getPlayers({ page, search })
   const teams = await getTeams({})
-  console.log({ players })
   return {
     players: R.map(
       player =>
@@ -41,7 +40,6 @@ class Main extends Component {
     page = this.state.page,
     searchTerm = this.state.searchTerm
   ) => {
-    console.log(searchTerm)
     getPlayerInfo(page, searchTerm).then(result => {
       this.setState({
         players: result.players,

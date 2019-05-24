@@ -12,13 +12,15 @@ export default {
   },
   name: {
     // paddingBottom: '16px'
-    marginBottom: '0px'
+    margin: '0px'
   },
   playerImage: {
     paddingBottom: '16px',
     height: '204px'
   },
   buttons: {
-    alignSelf: 'flex-end'
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between'
   }
 }
